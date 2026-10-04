@@ -1,7 +1,7 @@
 {
   "name": "@devxvoid/baileys",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A WebSockets library for interacting with WhatsApp Web — DEV X VOID Clean & Custom Pairing Fork of Baileys",
   "keywords": [
     "devxvoid",
