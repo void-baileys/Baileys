@@ -2,7 +2,7 @@
   "name": "@devxvoid/baileys",
   "type": "module",
   "version": "1.1.0",
-  "description": "A WebSockets library for interacting with WhatsApp Web — DEV X VOID Clean & Custom Pairing Fork of Baileys",
+  "description": "DEV X VOID Baileys fork — clean, backdoor-free WhatsApp Web API with status suite, secret mode, username resolver and extra message types.",
   "keywords": [
     "devxvoid",
     "void",
@@ -16,16 +16,16 @@
   "homepage": "https://t.me/Vo1d_op",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devxvoid/baileys.git"
+    "url": "git+https://github.com/void-baileys/Baileys.git"
   },
   "license": "MIT",
   "author": "DEV X VOID (https://t.me/Vo1d_op)",
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "files": [
     "lib/**/*",
     "WAProto/**/*",
-    "engine-requirements.js"
+    "engine-requirements.js",
+    "scripts/preflight.js"
   ],
   "scripts": {
     "build:all": "tsc && typedoc",
@@ -41,7 +41,9 @@
     "preinstall": "node ./engine-requirements.js",
     "release": "release-it",
     "test": "jest",
-    "publish:npm": "bash upload-npm.sh"
+    "publish:npm": "bash upload-npm.sh",
+    "check": "node scripts/preflight.js",
+    "prepublishOnly": "node scripts/preflight.js"
   },
   "dependencies": {
     "@cacheable/node-cache": "^1.4.0",
@@ -142,9 +144,16 @@
     "node": ">=20.0.0"
   },
   "bugs": {
-    "url": "https://t.me/Vo1d_op"
+    "url": "https://github.com/void-baileys/Baileys/issues"
   },
   "contributors": [
     "DEV X VOID"
-  ]
+  ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./*": "./*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }
