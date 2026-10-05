@@ -4,6 +4,20 @@ import $protobuf from "protobufjs/minimal.js";
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 const $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $TypeError = $util.global.TypeError, $parseInt = $util.global.parseInt, $BigInt = $util.global.BigInt, $String = $util.global.String, $Number = $util.global.Number, $Array = $util.global.Array, $Boolean = $util.global.Boolean, $isFinite = $util.global.isFinite;
 
+
+// ── DEV X VOID PATCH: protobufjs depth limits (default = 100) ──
+// Baileys-fork payloads legitimately nest deeper than 100 levels: deep
+// quotedMessage chains, inflated interactive headers, and the "decode-bypass"
+// payload builders (proto.Message.decode on a deep buffer, then re-encode).
+// With the default limit these all throw "max depth exceeded" and the message
+// never leaves the socket. protobufjs 7.x-generated protos (older builds) had
+// no active guard, so those same payloads worked there.
+// Effective ceiling after this patch = JS engine stack (~2000-2500 levels),
+// i.e. identical behaviour to upstream 7.0.0 protos. Truly hostile payloads
+// still fail (RangeError) and are caught by the caller's try/catch.
+$protobuf.util.recursionLimit = 10000;   // outgoing encode
+$protobuf.Reader.recursionLimit = 10000; // incoming/local decode
+
 const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
 function longToString(value, unsigned) {
